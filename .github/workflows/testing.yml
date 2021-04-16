@@ -13,21 +13,11 @@ jobs:
         run: |
           exit 1
 
-  meets-expectations-no-valgrind:
-    runs-on: ubuntu-latest
-    timeout-minutes: 1
-    if: "startsWith(github.event.head_commit.message, 'M:')"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Run M Tests
-        run: |
-          ./test-m no-valgrind
-
   meets-expectations:
     runs-on: ubuntu-latest
     timeout-minutes: 2
-    needs: meets-expectations-no-valgrind
-    if: "startsWith(github.event.head_commit.message, 'M:')"
+    if: "startsWith(github.event.head_commit.message, 'E:') ||
+         startsWith(github.event.head_commit.message, 'M:')"
     steps:
       - uses: actions/checkout@v2
       - name: Install Valgrind
@@ -38,21 +28,10 @@ jobs:
           ./test-m
 
 
-  meets-and-exemplary-no-valgrind:
-    runs-on: ubuntu-latest
-    timeout-minutes: 1
-    if: "startsWith(github.event.head_commit.message, 'E:')"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Run M Tests
-        run: |
-          ./test-m no-valgrind
-          ./test-e no-valgrind
-
-  meets-and-exemplary:
+  exemplary-work:
     runs-on: ubuntu-latest
     timeout-minutes: 2
-    needs: meets-and-exemplary-no-valgrind
+    needs: meets-expectations
     if: "startsWith(github.event.head_commit.message, 'E:')"
     steps:
       - uses: actions/checkout@v2
@@ -61,5 +40,4 @@ jobs:
           sudo apt-get -qq install valgrind
       - name: Run E Tests
         run: |
-          ./test-m
           ./test-e
