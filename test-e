@@ -1,17 +1,8 @@
 #!/usr/bin/python3
 
+import test_e
 import unittest
-import test_utilities
 
-class Tests(unittest.TestCase):
-  def testVectorPart1(self):
-    return_value = test_utilities.runIt('1 E')
-    if return_value != None:
-        self.fail(return_value)
-
-  def testVectorPart2(self):
-    return_value = test_utilities.runIt('2 E')
-    if return_value != None:
-        self.fail(return_value)
-
-unittest.main()
+if __name__=="__main__":
+  suite = unittest.defaultTestLoader.loadTestsFromModule(test_e)
+  unittest.TextTestRunner().run(suite)
