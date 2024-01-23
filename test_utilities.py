@@ -23,7 +23,7 @@ def buildCode():
         return 'Please do not disable warnings.'
 
   # Compile, show output
-  compile_return = runcmd('clang -g -o tester vector.c tester.c')
+  compile_return = runcmd('clang -gdwarf-4 -o tester vector.c tester.c')
   print(compile_return.stdout)
 
   # Make sure that warning causes test to fail
